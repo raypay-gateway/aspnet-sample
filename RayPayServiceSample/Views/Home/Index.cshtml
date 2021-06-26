@@ -1,0 +1,130 @@
+﻿@model PaymentGetTokenModel
+@{
+    ViewData["Title"] = "خانه";
+}
+
+<div class="container" style="direction: rtl">
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+    {
+        if (!ViewContext.ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger display-hide" style="display: block;margin-top:1rem;">
+                <button class="close" data-close="alert"></button>@Html.ValidationSummary()
+            </div>
+        }
+        <!-- BEGIN FORM-->
+        <form method="POST" class="horizontal-form margin-bottom-40" role="form">
+            @Html.AntiForgeryToken()
+            <div class="row" style="margin-top:1rem;">
+                <div class="col-md-8">
+                    <h4 style="text-align: right;">لطفا اطلاعات پرداخت را تکمیل نموده تا به صفحه پرداخت منتقل شوید.</h4>
+                    <p class="text-danger">
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="UserID">شناسه کاربری <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(x => x.UserID, new { @class = "form-control", @placeholder = "شناسه کاربری" })
+                                @Html.ValidationMessageFor(x => x.UserID)
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="AcceptorCode">کد پذیرنده <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(x => x.AcceptorCode, new { @class = "form-control", @placeholder = "کد پذیرنده" })
+                                @Html.ValidationMessageFor(x => x.AcceptorCode)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="RedirectUrl">آدرس بازگشت <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(x => x.RedirectUrl, new { @class = "form-control", @placeholder = "آدرس بازگشت" })
+                                @Html.ValidationMessageFor(x => x.RedirectUrl)
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="InvoiceID">شناسه پرداخت <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(x => x.InvoiceID, new { @class = "form-control", @placeholder = "شناسه پرداخت" })
+                                @Html.ValidationMessageFor(x => x.InvoiceID)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Amount">مبلغ <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(x => x.Amount, new { @class = "form-control", @placeholder = "مبلغ" })
+                                @Html.ValidationMessageFor(x => x.Amount)
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="FactorNymber">شماره فاکتور </label>
+                                @Html.TextBoxFor(x => x.FactorNumber, new { @class = "form-control", @placeholder = "شماره فاکتور" })
+                                @Html.ValidationMessageFor(x => x.FactorNumber)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Fullname">نام پرداخت کننده </label>
+                                @Html.TextBoxFor(x => x.FullName, new { @class = "form-control", @placeholder = "نام پرداخت کننده" })
+                                @Html.ValidationMessageFor(x => x.FullName)
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Comment">توضیحات </label>
+                                @Html.TextBoxFor(x => x.Comment, new { @class = "form-control", @placeholder = "توضیحات" })
+                                @Html.ValidationMessageFor(x => x.Comment)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Mobile">شماره تماس پرداخت کننده </label>
+                                @Html.TextBoxFor(x => x.Mobile, new { @class = "form-control", @placeholder = "شماره تماس پرداخت کننده" })
+                                @Html.ValidationMessageFor(x => x.Mobile)
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Email">ایمیل پرداخت کننده </label>
+                                @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "ایمیل پرداخت کننده" })
+                                @Html.ValidationMessageFor(x => x.Email)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="پرداخت" class="btn btn-success">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-4">
+
+                    <h4 style="text-align: right">توضیحات : </h4>
+                    <hr>
+                    <ul class="text-muted text-justify">
+                        <li>موارد ستاره دار (<b class="text-danger">*</b>) الزامی می باشد</li>
+                        <li><b class="text-dark">شناسه کاربری</b> و <b class="text-dark">کدپذیرنده</b> در بخش تنظیمات درگاه در پنل رای پی قابل دریافت هستند. </li>
+                        <li><b class="text-dark">شناسه پرداخت</b> یا شناسه ارجاع بانکی رای پی باید در هر تراکنش به صورت یکتا تولید گردد.</li>
+                        <li><b class="text-dark">مبلغ</b> باید به صورت رشته عددی و بدون هیچ جداکننده ای باشد</li>
+                        <li><b class="text-dark">آدرس بازگشت</b> باید با <b class="text-dark">//:http</b> یا <b class="text-dark">//:https</b> آغاز شود. </li>    
+                    </ul>
+
+                </div>
+            </div>
+
+
+           
+        </form>
+    }
+</div>

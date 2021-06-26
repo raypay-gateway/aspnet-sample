@@ -1,0 +1,43 @@
+﻿@model PaymentResultModel
+@{
+    ViewData["Title"] = "نتیجه تراکنش";
+}
+<style>
+    span {
+        color: #009688;
+    }
+</style>
+
+@if (!ViewContext.ViewData.ModelState.IsValid)
+{
+<div class="alert alert-danger display-hide" style="display: block;margin-top:1rem;">
+    <button class="close" data-close="alert"></button>@Html.ValidationSummary()
+</div>
+}
+@if (Model != null)
+{
+    if (Model.IsSuccess)
+    {
+        <div class="alert alert-success display-hide" style="display: block;margin-top:1rem;">
+            <button class="close" data-close="alert"></button>پرداخت با موفقیت انجام شد
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger display-hide" style="display: block;margin-top:1rem;">
+            <button class="close" data-close="alert"></button>پرداخت با خطا مواجه شد 
+        </div>
+    }
+}
+
+@if (Model != null)
+{
+    <ul style="direction: rtl;list-style: none;">
+        <li><label>مبلغ : </label><span>@Model.Amount</span></li>
+        <li><label>شناسه پرداخت : </label><span>@Model.InvoiceID</span></li>
+        <li><label>شماره فاکتور : </label><span>@Model.FactorNumber</span></li>
+        <li><label>شماره همراه پرداخت کننده : </label><span>@Model.Mobile</span></li>
+        <li><label>توضیحات : </label><span>@Model.Comments</span></li>
+
+    </ul>
+}
