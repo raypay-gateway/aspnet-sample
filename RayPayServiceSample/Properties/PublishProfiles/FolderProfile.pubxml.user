@@ -4,7 +4,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>D:\dotnet Projects\RayPay-AspNetCoreSample\RayPayServiceSample\bin\Release\netcoreapp3.1\publish\</_PublishTargetUrl>
-    <History>True|2021-09-01T13:10:36.3394225Z;True|2021-08-29T14:43:22.6548176+04:30;True|2021-08-29T08:27:18.8881419+04:30;False|2021-08-29T08:26:08.2491304+04:30;True|2021-08-28T13:58:37.5807174+04:30;True|2021-06-24T13:25:29.2032635+04:30;True|2021-06-22T11:16:46.1432711+04:30;True|2021-06-22T10:09:33.7330575+04:30;True|2021-06-22T09:37:58.5120218+04:30;True|2021-06-22T09:08:18.8519072+04:30;</History>
+    <_PublishTargetUrl>D:\pardakht\RayPay Plugins\RayPay-AspNetCoreSample\RayPayServiceSample\bin\Release\netcoreapp3.1\publish\</_PublishTargetUrl>
+    <History>True|2021-09-12T05:09:13.4915464Z;True|2021-09-01T17:40:36.3394225+04:30;True|2021-08-29T14:43:22.6548176+04:30;True|2021-08-29T08:27:18.8881419+04:30;False|2021-08-29T08:26:08.2491304+04:30;True|2021-08-28T13:58:37.5807174+04:30;True|2021-06-24T13:25:29.2032635+04:30;True|2021-06-22T11:16:46.1432711+04:30;True|2021-06-22T10:09:33.7330575+04:30;True|2021-06-22T09:37:58.5120218+04:30;True|2021-06-22T09:08:18.8519072+04:30;</History>
   </PropertyGroup>
 </Project>
