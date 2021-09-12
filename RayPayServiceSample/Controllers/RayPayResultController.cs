@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RayPayServiceSample.Model;
 using RayPayServiceSample.Models;
 
 namespace RayPayServiceSample.Controllers
@@ -22,51 +24,63 @@ namespace RayPayServiceSample.Controllers
            
         }
 
-        public async Task<IActionResult> IndexAsync()
+        [HttpPost]
+        public async Task<IActionResult> Index(PaymentCallbackParam param)
         {
             PaymentResultModel model = new PaymentResultModel();
             try
             {
-                if (_httpContextAccessor.HttpContext.Request.Query["invoiceID"] != string.Empty)
+                if (param != null)
                 {
-                    string invoiceID = _httpContextAccessor.HttpContext.Request.Query["invoiceID"];
-
-                    string result = await Verify(invoiceID);
-
-                    int paymentStatus = Convert.ToInt32(JObject.Parse(result)["Data"]["State"]);
+                    string result = await Verify(param);
+                    int paymentStatus = Convert.ToInt32(JObject.Parse(result)["Data"]["Status"]);
                     if (paymentStatus == 1)
                         model.IsSuccess = true;
                     else
                         model.IsSuccess = false;
 
                     model.FactorNumber = JObject.Parse(result)["Data"]["FactorNumber"].ToString();
-                   
                     model.InvoiceID = JObject.Parse(result)["Data"]["InvoiceID"].ToString();
-                    model.Comments = JObject.Parse(result)["Data"]["Comments"].ToString();
-                    model.Mobile = JObject.Parse(result)["Data"]["Mobile"].ToString();
+                    model.WritHeaderID = JObject.Parse(result)["Data"]["WritheaderID"].ToString();
+                    model.Comments = JObject.Parse(result)["Data"]["comment"].ToString();
+                    model.Mobile = JObject.Parse(result)["Data"]["mobile"].ToString();
+                    model.Email = JObject.Parse(result)["Data"]["email"].ToString();
+                    model.FullName = JObject.Parse(result)["Data"]["fullName"].ToString();
+                    model.Message = JObject.Parse(result)["Message"].ToString();
                     model.Amount = JObject.Parse(result)["Data"]["Amount"].ToString();
                 }
                 else
-                    Response.Redirect("~/", false);
+                {
+                    //Response.Redirect("~/", false);
+                    ModelState.AddModelError(string.Empty, "خطا در بازگشت از درگاه رخ داده است");
+                    return View();
+                }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty,"خطا رخ داده است");
+                ModelState.AddModelError(string.Empty, "خطا رخ داده است");
                 return View();
             }
             return View(model);
         }
-        public async Task<string> Verify(string invoiceID)
+        public async Task<string> Verify(PaymentCallbackParam sepehrData)
         {
             var client = new HttpClient();
-            var requestContent = new StringContent("data", Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync(
-                "http://5.182.44.228:14000/raypay/api/v1/Payment/checkInvoice?pInvoiceID=" + invoiceID, requestContent);
-            HttpContent responseContent = response.Content;
+            var json = JsonConvert.SerializeObject(sepehrData);
+            var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
+            try
+            {
+                HttpResponseMessage response = await client.PostAsync(
+              "https://api.raypay.ir/raypay/api/v1/Payment/verify", requestContent);
+                HttpContent responseContent = response.Content;
+                return await responseContent.ReadAsStringAsync();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
 
-            var jsonString = await responseContent.ReadAsStringAsync();
 
-            return jsonString;
         }
     }
 }

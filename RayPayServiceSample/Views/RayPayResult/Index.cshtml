@@ -32,12 +32,16 @@
 
 @if (Model != null)
 {
-    <ul style="direction: rtl;list-style: none;">
-        <li><label>مبلغ : </label><span>@Model.Amount</span></li>
-        <li><label>شناسه پرداخت : </label><span>@Model.InvoiceID</span></li>
-        <li><label>شماره فاکتور : </label><span>@Model.FactorNumber</span></li>
-        <li><label>شماره همراه پرداخت کننده : </label><span>@Model.Mobile</span></li>
-        <li><label>توضیحات : </label><span>@Model.Comments</span></li>
+<ul style="direction: rtl;list-style: none;">
+    <li><label>مبلغ : </label><span>@Model.Amount</span></li>
+    <li><label>شناسه پرداخت : </label><span>@Model.InvoiceID</span></li>
+    @if (Model.WritHeaderID != "0")
+    {<li><label>شماره پیگیری : </label><span>@Model.WritHeaderID</span></li>}
+    <li><label>شماره فاکتور : </label><span>@Model.FactorNumber</span></li>
+    <li><label>نام پرداخت کننده : </label><span>@Model.FullName</span></li>
+    <li><label>شماره همراه پرداخت کننده : </label><span>@Model.Mobile</span></li>
+    <li><label>ایمیل پرداخت کننده : </label><span>@Model.Email</span></li>
+    <li><label>توضیحات : </label><span>@Model.Comments</span></li>
 
-    </ul>
+</ul>
 }

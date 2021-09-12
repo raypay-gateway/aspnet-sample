@@ -13,8 +13,8 @@ namespace RayPayServiceSample.Models
         /// <summary>
         /// کد پذیرنده
         /// </summary>
-        [Required(ErrorMessage = "کد پذیرنده الزامی است")]
-        public string AcceptorCode { get; set; }
+        [Required(ErrorMessage = "شناسه کسب و کار الزامی است")]
+        public string MarketingID { get; set; }
 
 
         /// <summary>
@@ -41,27 +41,34 @@ namespace RayPayServiceSample.Models
         /// <summary>
         /// نام پرداخت کننده
         /// </summary>
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string FullName { get; set; }
 
         /// <summary>
         /// شماره تلفن پرداخت کننده
         /// </summary>
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Mobile { get; set; }
 
         /// <summary>
         /// ایمیل پرداخت کننده
         /// </summary>
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Email { get; set; }
 
         /// <summary>
         /// شماره فاکتور
         /// </summary>
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string FactorNumber { get; set; }
 
         /// <summary>
         /// توضیحات
         /// </summary>
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Comment { get; set; }
+
+        public bool EnableSandBox { get; set; }
 
     }
 

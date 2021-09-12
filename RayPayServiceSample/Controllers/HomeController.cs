@@ -29,7 +29,7 @@ namespace RayPayServiceSample.Controllers
             PaymentGetTokenModel model = new PaymentGetTokenModel
             {
                 UserID = Constants.UserID,
-                AcceptorCode = Constants.AcceptorCode,
+                MarketingID = Constants.MarketingID,
                 InvoiceID = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds().ToString(),
                 RedirectUrl = _httpContextAccessor.HttpContext.Request.Scheme + "://" + _httpContextAccessor.HttpContext.Request.Host + "/RayPayResult/Index",
                 Amount = "1000"
@@ -49,20 +49,10 @@ namespace RayPayServiceSample.Controllers
 
                 if (Parameters.IsSuccess == true)
                     {
-                    string token = JObject.Parse(ParametersJson)["Data"]["Accesstoken"].ToString();
-                    string terminalID = JObject.Parse(ParametersJson)["Data"]["TerminalID"].ToString();
-                   
-                        Dictionary<string, string> PostData = new Dictionary<string, string>
-                    {
-                        { "token",token},
-                        { "TerminalID", terminalID}
-                    };
+                    string jwtToken= JObject.Parse(ParametersJson)["Data"].ToString();
 
-                        var shaparakUrl =  " https://mabna.shaparak.ir:8080/Pay ";
-
-                         SendDataToShaparak(shaparakUrl, PostData);
-                        return View();
-                    }
+                    _httpContextAccessor.HttpContext.Response.Redirect("https://my.raypay.ir/IPG?token=" + jwtToken);
+                }
                     else {
                         throw new Exception(" - خطا در اتصال به سرویس پرداخت رای پی - " + Parameters.Message);
                     }
@@ -90,7 +80,7 @@ namespace RayPayServiceSample.Controllers
             try
             {
                 HttpResponseMessage response = await client.PostAsync(
-                   "http://5.182.44.228:14000/raypay/api/v1/Payment/getPaymentTokenWithUserID", requestContent);
+                "https://api.raypay.ir/raypay/api/v1/Payment/pay", requestContent);
                 HttpContent responseContent = response.Content;
                 return await responseContent.ReadAsStringAsync();
             }
@@ -98,43 +88,6 @@ namespace RayPayServiceSample.Controllers
             {
                 throw exception;
             }
-        }
-
-        public void SendDataToShaparak(string varURL, Dictionary<string, string> varData)
-        {
-            string FormName = "raypaySubmitForm";
-            string Method = "post";
-            var sb = new StringBuilder();
-            sb.Append("<html><head>");
-            sb.Append($"</head><body onload=\"document.{FormName}.submit()\">");
-            sb.Append($"<form name=\"{FormName}\" method=\"{Method}\" action=\"{varURL}\" >");
-                foreach (var key in varData)
-                        {
-                            sb.Append(
-                                $"<input name=\"{WebUtility.HtmlEncode(key.Key)}\" type=\"hidden\" value=\"{WebUtility.HtmlEncode(key.Value)}\">");
-                        }
-            sb.Append("</form>");
-            sb.Append("</body></html>");
-
-            var data = Encoding.UTF8.GetBytes(sb.ToString());
-
-            //modify the response
-            var httpContext = _httpContextAccessor.HttpContext;
-            var response = httpContext.Response;
-
-            //change headers before the content is written to body
-            response.OnStarting(() =>
-            {
-                response.ContentType = "text/html; charset=utf-8";
-                response.ContentLength = data.Length;
-
-                return Task.CompletedTask;
-            });
-
-            response.Clear();
-            response.Body
-                .WriteAsync(data, 0, data.Length)
-                .Wait();
         }
     }
 }
